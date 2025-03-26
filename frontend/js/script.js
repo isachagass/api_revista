@@ -41,52 +41,82 @@ document.getElementById("cadastroForm").addEventListener("submit", async functio
 });
 
 //login ->conexão com api
-document.addEventListener("DOMContentLoaded", function () {
-    document.getElementById("loginForm").addEventListener("submit", async function(event){
-        event.preventDefault();
+document.getElementById("loginForm").addEventListener("submit", async function (event) {
+    event.preventDefault();
 
-        const email = document.getElementById("Usuario_email").value.trim();
-        const senha = document.getElementById("Usuario_senha").value.trim();
-        const mensagem = document.getElementById("mensagem");
+    const email = document.getElementById("Login_email").value;
+    const senha = document.getElementById("Login_senha").value;
 
-        if (!email || !senha) {
-            mensagem.textContent = "Preencha todos os campos!";
-            mensagem.style.color = "red";
-            return;
+    try {
+        const response = await fetch("http://localhost/api_php/backend/endpoint/Post/login.php", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ Usuario_email: email, Usuario_senha: senha })
+        });
+
+        if (!response.ok) {
+            throw new Error("Erro na resposta da API");
         }
 
-        const dados_login = {
-            Usuario_email: email,
-            Usuario_senha: senha
-        };
+        const result = await response.json();
 
-        console.log("Enviando para API:", dados_login); // VERIFICA SE OS DADOS ESTÃO SENDO ENVIADOS
-
-        try {
-            const resposta = await fetch("http://localhost/api_php/backend/login.php", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(dados_login)
-            });
-
-            const resultado = await resposta.json();
-            console.log("Resposta da API:", resultado); // Debug da resposta
-
-            if (resultado.status === "success") {
-                alert("Login realizado com sucesso!");
-                localStorage.setItem("usuario", JSON.stringify(resultado.usuario));
-                window.location.href = "teste.html";
-            } else {
-                mensagem.textContent = resultado.mensagem;
-                mensagem.style.color = "red";
-            }
+        // Verifique o campo 'status' da resposta
+        if (result.status === 'success') {
+            alert(`✅ Bem-vindo, ${result.usuario.nome}!`);
+            // Aqui você pode redirecionar para outra página ou salvar o usuário na sessão/localStorage
+            window.location.href = "dashboard.html"; // Exemplo de redirecionamento
+        } else {
+            alert(`❌ Erro: ${result.mensagem || result.message}`);
         }
-        catch (erro) {
-            console.error("Erro ao conectar à API:", erro);
-            mensagem.textContent = "Erro ao conectar à API";
-            mensagem.style.color = "red";
-        }
-    });
+    } catch (error) {
+        console.error(error);
+        alert("Erro ao conectar com o servidor");
+    }
 });
+
+
+
+
+//livro -> conexão com api
+// document.getElementById("formCriarLivro").addEventListener("submit", async function(event) {
+//     event.preventDefault();
+
+//     const titulo = document.getElementById("titulo_livro").value;
+//     const sinopse = document.getElementById("sinopse_livro").value;
+    
+
+//     const dados = {
+//         Catalogo_titulo: titulo,
+//         Catalogo_sinopse: sinopse,
+        
+
+//     };
+
+//     try{
+//         const resposta = await fetch("http://localhost/api_php/backend/endpoint/Post/catalogo_post.php", {
+//             method: "POST",
+//             headers: {
+//                 "Content-Type": "application/json"
+//             }, 
+//             body: JSON.stringify(dados)
+//         });
+    
+//         const resultado = await resposta.json();
+    
+//         if (resultado.status === 'success'){
+//             alert("Livro cadastrado com sucesso!");
+//             document.getElementById("formCriarLivro").reset();
+//         } else{
+//             alert("Erro ao cadastrar Livro! Tente novamente");
+//         }
+
+//     }
+//     catch (erro){
+//         console.error("Erro ao conectar a API:", erro);
+//         alert("Erro ao conectar a API!!");
+//     }
+    
+
+// });

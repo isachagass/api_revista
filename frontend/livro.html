@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <form id="formCriarLivro">
+        <input type="text" name="titulo_livro" id="Catalogo_titulo" placeholder="Título:" class="mt-2" required>
+
+        <label for="sinopse_livro" class="mt-2">Sinopse do Livro:</label>
+        <textarea name="sinopse_livro" id="Catalogo_sinopse" class="form-control" rows="5" required></textarea>
+
+        <div class="add_img_livro mt-2 d-flex justify-content-end">
+            <button class="botoes fw-normal p-1 ps-2 pe-2">Adicionar Imagem <i class="bi bi-box-arrow-in-down"></i></button>
+
+            <button class="botoes fw-normal p-1" style="background-color: #a3e047;" type="submit">Postar</button>
+        </div>
+    </form>
+<script src="./js/script.js"></script>
+</body>
+
+</html>

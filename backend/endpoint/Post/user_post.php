@@ -7,29 +7,26 @@ header("Access-Control-Allow-Headers: Content-Type");
 require_once '../database.php';
 
 header('Content-Type: application/json');
-$json = json_decode(file_get_contents("php://input"),true);
+$json = json_decode(file_get_contents("php://input"), true);
 
+// Verifica se os campos necessários foram enviados
+if (!isset($json['Usuario_nome']) || !isset($json['Usuario_email']) || !isset($json['Usuario_senha'])) {
+    echo json_encode(["status" => "erro", "mensagem" => "Campos obrigatórios ausentes"]);
+    exit;
+}
 
-$sql = $conn->prepare(query: "INSERT INTO Usuarios VALUE(NULL, :nome , :email, :senha, NULL)");
-$sql->bindValue(':nome', $json['Usuario_nome']);
-$sql->bindValue(':email', $json['Usuario_email']);
-$sql->bindValue(':senha', $json['Usuario_senha']);
+$nome = $json['Usuario_nome'];
+$email = $json['Usuario_email'];
+$senha = password_hash($json['Usuario_senha'], PASSWORD_DEFAULT); // Hash seguro
 
+$sql = $conn->prepare("INSERT INTO Usuarios (Usuario_nome, Usuario_email, Usuario_senha) VALUES (:nome, :email, :senha)");
+$sql->bindParam(':nome', $nome);
+$sql->bindParam(':email', $email);
+$sql->bindParam(':senha', $senha);
 $sql->execute();
 
 if ($sql->rowCount() > 0) {
-    header('Content-Type: application/json');
-    $mesagem = [
-        "status" => "success",
-    ];
-    echo json_encode($mesagem);
-
+    echo json_encode(["status" => "success", "mensagem" => "Usuário cadastrado com sucesso"]);
 } else {
-    header("Content-Type: application/json");
-    $mesagem = [
-        "status" => "erro",
-    ];
-    echo json_encode($mesagem);
+    echo json_encode(["status" => "erro", "mensagem" => "Erro ao cadastrar usuário"]);
 }
-
-
