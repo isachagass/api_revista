@@ -41,40 +41,43 @@ document.getElementById("cadastroForm").addEventListener("submit", async functio
 });
 
 //login ->conexão com api
-document.getElementById("loginForm").addEventListener("submit", async function (event) {
-    event.preventDefault();
+// document.getElementById("loginForm").addEventListener("submit", async function (event) {
+//     event.preventDefault();
 
-    const email = document.getElementById("Login_email").value;
-    const senha = document.getElementById("Login_senha").value;
+//     const email = document.getElementById("Login_email").value;
+//     const senha = document.getElementById("Login_senha").value;
 
-    try {
-        const response = await fetch("http://localhost/api_php/backend/endpoint/Post/login.php", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ Usuario_email: email, Usuario_senha: senha })
-        });
+//     try {
+//         const response = await fetch("http://localhost/api_php/backend/endpoint/Post/login.php", {
+//             method: "POST",
+//             headers: {
+//                 "Content-Type": "application/json"
+//             },
+//             body: JSON.stringify({ Usuario_email: email, Usuario_senha: senha })
+//         });
 
-        if (!response.ok) {
-            throw new Error("Erro na resposta da API");
-        }
+//         if (!response.ok) {
+//             throw new Error("Erro na resposta da API");
+//         }
 
-        const result = await response.json();
+//         const result = await response.json();
 
-        // Verifique o campo 'status' da resposta
-        if (result.status === 'success') {
-            alert(`✅ Bem-vindo, ${result.usuario.nome}!`);
-            // Aqui você pode redirecionar para outra página ou salvar o usuário na sessão/localStorage
-            window.location.href = "dashboard.html"; // Exemplo de redirecionamento
-        } else {
-            alert(`❌ Erro: ${result.mensagem || result.message}`);
-        }
-    } catch (error) {
-        console.error(error);
-        alert("Erro ao conectar com o servidor");
-    }
-});
+//         // Verifique o campo 'status' da resposta
+//         if (result.status === 'success') {
+//             alert(`Bem-vindo, ${result.usuario.nome}!`);
+//             // Aqui você pode redirecionar para outra página ou salvar o usuário na sessão/localStorage
+//             window.location.href = "dashboard.html"; // Exemplo de redirecionamento
+//         } else {
+//             alert(`Erro: ${result.mensagem || result.message}`);
+//         }
+//     } catch (error) {
+//         console.error(error);
+//         alert("Erro ao conectar com o servidor");
+//     }
+// });
+
+
+
 
 
 

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>noticias</h1>
+    <form class="d-flex flex-column form_criar" id="formCriarNoticia">
+
+        <select id="materia_noticia" name="materia_questao" required class="mt-2 mb-2">
+            <option value="" class="selecionada" disabled selected>Selecione uma matéria</option>
+            <option value="1">Artes</option>
+            <option value="2">Biologia</option>
+            <option value="3">Filosofia</option>
+            <option value="4">Física</option>
+            <option value="5">Geografia</option>
+            <option value="6">História</option>
+            <option value="7">Inglês</option>
+            <option value="8">Língua Portuguesa</option>
+            <option value="9">Matemática</option>
+            <option value="10">Química</option>
+            <option value="11">Sociologia</option>
+     
+
+        </select>
+
+        <input type="text" name="titulo_noticia" id="titulo_noticia" placeholder="Título:"
+            class="mt-2" required>
+
+
+
+        <label for="txt_noticia" class="mt-2">Notícia:</label>
+        <textarea name="txt_noticia" id="txt_noticia" class="form-control" rows="5"
+            required></textarea>
+
+        <div class="add_img_livro mt-2 d-flex justify-content-end">
+            <!-- <button class="botoes fw-normal p-1 ps-2 pe-2">Adicionar Imagem <i
+                    class="bi bi-box-arrow-in-down"></i></button> -->
+
+            <button class="botoes fw-normal p-1" style="background-color: #a3e047;"
+                type="submit">Enviar</button>
+        </div>
+    </form>
+<script src="./js/script_noticia.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>questao</title>
+</head>
+<body>
+    <h1>questao</h1>
+    <form id="formCriarQuestao" class="d-flex flex-column form_criar">
+                                
+        <select id="materia_questao" name="materia_questao" required class="mt-2 mb-2">
+            <option value="" class="selecionada" disabled selected>Selecione uma matéria</option>
+            <option value="1">Artes</option>
+            <option value="2">Biologia</option>
+            <option value="3">Filosofia</option>
+            <option value="4">Física</option>
+            <option value="5">Geografia</option>
+            <option value="6">História</option>
+            <option value="7">Inglês</option>
+            <option value="8">Língua Portuguesa</option>
+            <option value="9">Matemática</option>
+            <option value="10">Química</option>
+            <option value="11">Sociologia</option>
+
+        </select>
+
+        <select id="tema_questao" name="tema_questao" required class="mt-2" >
+            <option value=""  class="selecionada" disabled selected>Selecione um tema</option>
+            <option value="1">Revolução Francesa</option>
+            <option value="2">Primeira Guerra Mundial</option>
+            <option value="3">Guerra Fria</option>
+            <option value="4">Revolução Industrial</option>
+
+        </select>
+
+        
+
+        <label for="txt_questao" class="mt-2">Questão:</label>
+        <textarea name="txt_questao" id="txt_questao" class="form-control" rows="5"
+            required ></textarea>
+
+        <label for="explicacao_questao" class="mt-2">Explicação:</label>
+        <textarea name="explicacao_questao" id="explicacao_questao" class="form-control" rows="5"
+            required ></textarea>
+
+
+        <div class="add_img_livro mt-2 d-flex justify-content-end">
+            <!-- <button class="botoes fw-normal p-1 ps-2 pe-2">Adicionar Imagem <i class="bi bi-box-arrow-in-down"></i></button> -->
+
+            <button class="botoes fw-normal p-1" style="background-color: #a3e047;">Postar</button>
+        </div>
+    </form>
+
+    <script src="./js/scriptQuestao.js"></script>
+</body>
+</html>

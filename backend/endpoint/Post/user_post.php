@@ -17,7 +17,7 @@ if (!isset($json['Usuario_nome']) || !isset($json['Usuario_email']) || !isset($j
 
 $nome = $json['Usuario_nome'];
 $email = $json['Usuario_email'];
-$senha = password_hash($json['Usuario_senha'], PASSWORD_DEFAULT); // Hash seguro
+$senha = $json['Usuario_senha']; // Hash seguro
 
 $sql = $conn->prepare("INSERT INTO Usuarios (Usuario_nome, Usuario_email, Usuario_senha) VALUES (:nome, :email, :senha)");
 $sql->bindParam(':nome', $nome);

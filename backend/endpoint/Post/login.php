@@ -7,33 +7,32 @@ header('Content-Type: application/json');
 $json = json_decode(file_get_contents("php://input"), true);
 
 // Verificando se os campos obrigatórios foram recebidos
-if (!isset($json['Usuario_email']) || !isset($json['Usuario_senha'])) {
-    echo json_encode(["status" => "erro", "mensagem" => "Usuário ou senha incorretos"]);
+if (!isset($json['Usuario_nome']) || !isset($json['Usuario_senha'])) {
+    echo json_encode(["status" => "erro", "mensagem" => "Campos obrigatórios ausentes"]);
     exit;
 }
 
-$email = $json['Usuario_email'];
+$nome = $json['Usuario_nome'];
 $senha = $json['Usuario_senha'];
 
-// Modificando a consulta para buscar pelo email
-$sql = "SELECT Usuario_senha, Usuario_nome FROM Usuarios WHERE Usuario_email = :email";
+$sql = "SELECT Usuario_senha, Usuario_nivel FROM Usuarios WHERE Usuario_nome = :nome";
 $stmt = $conn->prepare($sql);
-$stmt->bindParam(":email", $email, PDO::PARAM_STR);
+$stmt->bindParam(":nome", $nome, PDO::PARAM_STR);
 $stmt->execute();
 $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
+
 if ($result) {
-    // Verificando a senha utilizando password_verify
-    if (password_verify($senha, $result["Usuario_senha"])) {
+    // Verificando a senha (se estiver armazenada como hash, use password_verify())
+    if ($senha === $result["Usuario_senha"]) {
         echo json_encode([
-            "status" => "success",
+            "status" => "success", 
             "mensagem" => "Login realizado com sucesso",
-            "usuario" => ["nome" => $result["Usuario_nome"]]
+            "nivel" => $result["Usuario_nivel"]
         ]);
     } else {
-        echo json_encode(["status" => "erro", "mensagem" => "Usuário ou senha incorretos"]);
+        echo json_encode(["status" => "erro", "mensagem" => "Senha incorreta"]);
     }
 } else {
-    echo json_encode(["status" => "erro", "mensagem" => "Usuário ou senha incorretos"]);
+    echo json_encode(["status" => "erro", "mensagem" => "Usuário não encontrado"]);
 }
-?>
