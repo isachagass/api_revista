@@ -1,27 +1,28 @@
-document.getElementById("formCriarNoticia").addEventListener("submit", async function (event) {
+document.getElementById("formCriarContMateria").addEventListener("submit", async function (event) {
     event.preventDefault();
-    // console.log("Script carregado!");
-
+    
     const formData = new FormData();
-    const idMateria_noticia = document.getElementById("materia_noticia").value;
-    const titulo_noticia = document.getElementById("titulo_noticia").value;
-    const conteudo_noticia = document.getElementById("txt_noticia").value;
-    const img_noticia = document.getElementById("img_noticia").files[0];
 
-    if (!idMateria_noticia || !titulo_noticia || !conteudo_noticia) {
+    const idMateria_contMateria = document.getElementById("materia_ContMateria").value;
+    const titulo_contMateria = document.getElementById("titulo_Cont_materia").value;
+    const conteudo_contMateria = document.getElementById("txt_cont_materia").value;
+    const imagem_contMateria = document.getElementById("ContMateria_img").files[0];
+
+    if (!idMateria_contMateria || !titulo_contMateria || !conteudo_contMateria) {
         alert("Preencha todos os campos!");
         return;
     } 
     // console.log("O script de criação de notícia carregou corretamente!");
 
-    formData.append("Conteudo_titulo", titulo_noticia);
-    formData.append("Conteudo_img", img_noticia);
-    formData.append("Conteudo_cont", conteudo_noticia);
-    formData.append("Conteudo_tipo", "1");
+    formData.append("Conteudo_titulo", titulo_contMateria);
+    formData.append("Conteudo_img", imagem_contMateria);
+    formData.append("Conteudo_cont", conteudo_contMateria);
+    formData.append("Conteudo_tipo", "2");
     formData.append("Usuarios_idUsuarios", "2");
-    formData.append("Materia_idMateria", idMateria_noticia);
-
+    formData.append("Materia_idMateria", idMateria_contMateria);
+    
     console.log("Enviando:", [...formData.entries()]);
+
 
     try {
         const resposta = await fetch("http://localhost/api_php/backend/endpoint/Post/conteudo_post.php", {
@@ -36,6 +37,7 @@ document.getElementById("formCriarNoticia").addEventListener("submit", async fun
         let result;
         try {
             result = JSON.parse(respostaTexto);
+            
         } catch (erroJson) {
             console.error("Erro ao converter resposta JSON:", respostaTexto);
             alert("Erro na resposta da API!");

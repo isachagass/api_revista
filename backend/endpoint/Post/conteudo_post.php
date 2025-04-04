@@ -1,30 +1,42 @@
 <?php
 
-// Definir cabeçalhos para permitir requisições de qualquer origem
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: POST");
-header("Content-Type: application/json; charset=UTF-8");
 
 // Conexão com o banco de dados
 require_once '../database.php';
 
-// Lê os dados JSON enviados pelo frontend
-$json = file_get_contents("php://input");
-$dados = json_decode($json, true);
+header("Content-Type: application/json");
 
-// Verifica se os dados foram recebidos corretamente
-if (empty($dados)) {
-    echo json_encode(["status" => "error", "message" => "Nenhum dado recebido"]);
+if ($_SERVER["REQUEST_METHOD"] !== "POST") {
+    echo json_encode(["status" => "error", "message" => "Método inválido"]);
     exit;
 }
 
 // Captura os dados corretamente e evita erro de acesso a valores nulos
-$conteudo_titulo = $dados['Conteudo_titulo'] ?? null;
-$conteudo_cont = $dados['Conteudo_cont'] ?? null;
-$conteudo_tipo = $dados['Conteudo_tipo'] ?? null;
-$materia_id = $dados['Materia_idMateria'] ?? null;
-$conteudo_img = $dados['Conteudo_img'] ?? null;
-$usuario_id = $dados['Usuarios_idUsuarios'] ?? null;
+$conteudo_titulo = $_POST['Conteudo_titulo'] ?? null;
+$conteudo_cont = $_POST['Conteudo_cont'] ?? null;
+$conteudo_tipo = $_POST['Conteudo_tipo'] ?? null;
+$materia_id = $_POST['Materia_idMateria'] ?? null;
+$usuario_id = $_POST['Usuarios_idUsuarios'] ?? null;
+
+if (isset($_FILES["Conteudo_img"]) && $_FILES["Conteudo_img"]["error"] === 0) {
+    $nomeArquivo = basename($_FILES["Conteudo_img"]["name"]);
+    $caminhoDestino = "../../uploads/" . $nomeArquivo;
+
+    
+
+    // Tenta mover a imagem para a pasta correta
+    if (move_uploaded_file($_FILES["Conteudo_img"]["tmp_name"], $caminhoDestino)) {
+        $conteudo_img = $caminhoDestino;
+    } else {
+        echo json_encode(["status" => "error", "message" => "Falha ao salvar imagem"]);
+        exit;
+    }
+} else {
+    echo json_encode(["status" => "error", "message" => "Imagem não enviada corretamente"]);
+    exit;
+}
+
+
 
 // Verifica se os campos obrigatórios estão preenchidos
 if (!$conteudo_titulo || !$conteudo_cont || !$materia_id || !$usuario_id) {

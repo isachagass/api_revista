@@ -3,35 +3,52 @@ require_once '../database.php';
 
 header('Content-Type: application/json');
 
-$json = file_get_contents("php://input");
-$dados = json_decode($json, true);
 
-// Verifica se os dados foram recebidos corretamente
-if (empty($dados)) {
-    echo json_encode(["status" => "error", "message" => "Nenhum dado recebido"]);
+if ($_SERVER["REQUEST_METHOD"] !== "POST") {
+    echo json_encode(["status" => "error", "message" => "Método inválido"]);
     exit;
 }
 
-$atividade_titulo = $dados['Atividade_titulo'] ?? null;
-$atividade_cont = $dados['Atividade_cont'] ?? null;
-$atividade_exp = $dados['Atividade_exp'] ?? null;
-$atividade_img = $dados['Atividade_img'];
-$materia_id = $dados['Materia_idMateria'] ?? null;
-$usuario_id = $dados['Usuarios_idUsuarios'] ?? null;
+$atividade_titulo = $_POST['Atividade_titulo'] ?? null;
+$atividade_cont = $_POST['Atividade_cont'] ?? null;
+$atividade_exp = $_POST['Atividade_exp'] ?? null;
+$materia_id = $_POST['Matéria_idMatéria'] ?? null;
+$usuario_id = $_POST['Usuarios_idUsuarios'] ?? null;
 
-if (!$atividade_titulo || !$atividade_cont || !$atividade_exp || !$atividade_img || !$materia_id || !$usuario_id) {
+
+if (isset($_FILES["Atividade_img"]) && $_FILES["Atividade_img"]["error"] === 0) {
+    $nomeArquivo = basename($_FILES["Atividade_img"]["name"]);
+    $caminhoDestino = "../../uploads/" . $nomeArquivo;
+
+    
+
+    // Tenta mover a imagem para a pasta correta
+    if (move_uploaded_file($_FILES["Atividade_img"]["tmp_name"], $caminhoDestino)) {
+        $atividade_img = $caminhoDestino;
+    } else {
+        echo json_encode(["status" => "error", "message" => "Falha ao salvar imagem"]);
+        exit;
+    }
+} else {
+    echo json_encode(["status" => "error", "message" => "Imagem não enviada corretamente"]);
+    exit;
+}
+
+
+if (!$atividade_titulo || !$atividade_cont || !$atividade_exp || !$materia_id || !$usuario_id) {
     echo json_encode(["status" => "error", "message" => "Campos obrigatórios ausentes"]);
     exit;
 }
 
 try{
-    $sql = $conn->prepare(query: "INSERT INTO Atividades VALUE(NULL, :titulo, :conteudo, :exp, :img, :fkmateria, :fkUsuario)");
-    $sql->bindValue(':titulo', $json['Atividade_titulo']);
-    $sql->bindValue(':img', $json['Atividade_img']);
-    $sql->bindValue(':conteudo', $json['Atividade_cont']);
-    $sql->bindValue(':exp', $json['Atividade_exp']);
-    $sql->bindValue(':fkmateria', value: $json['Matéria_idMatéria']);
-    $sql->bindValue(':fkUsuario', $json['Usuarios_idUsuarios']);
+    $sql = $conn->prepare("INSERT INTO Atividades (Atividade_titulo, Atividade_cont, Atividade_exp, Atividade_img, Matéria_idMatéria, Usuarios_idUsuarios) VALUES (:titulo, :conteudo, :exp, :img, :fkmateria, :fkUsuario)");
+
+    $sql->bindValue(':titulo', $atividade_titulo);
+    $sql->bindValue(':img', $atividade_img);
+    $sql->bindValue(':conteudo', $atividade_cont);
+    $sql->bindValue(':exp', $atividade_exp);
+    $sql->bindValue(':fkmateria', $materia_id);
+    $sql->bindValue(':fkUsuario', $usuario_id);
     
     
     

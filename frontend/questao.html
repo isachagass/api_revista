@@ -7,7 +7,7 @@
 </head>
 <body>
     <h1>questao</h1>
-    <form id="formCriarQuestao" class="d-flex flex-column form_criar">
+    <form id="formCriarQuestao" class="d-flex flex-column form_criar" enctype="multipart/form-data">
                                 
         <select id="materia_questao" name="materia_questao" required class="mt-2 mb-2">
             <option value="" class="selecionada" disabled selected>Selecione uma matéria</option>
@@ -46,9 +46,9 @@
 
 
         <div class="add_img_livro mt-2 d-flex justify-content-end">
-            <!-- <button class="botoes fw-normal p-1 ps-2 pe-2">Adicionar Imagem <i class="bi bi-box-arrow-in-down"></i></button> -->
+            <input type="file" name="img_questao" id="img_questao" accept="image/*" required>
 
-            <button class="botoes fw-normal p-1" style="background-color: #a3e047;">Postar</button>
+            <button class="botoes fw-normal p-1" style="background-color: #a3e047;" type="submit">Postar</button>
         </div>
     </form>
 

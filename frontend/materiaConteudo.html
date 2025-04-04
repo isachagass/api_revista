@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 
 <head>
     <meta charset="UTF-8">
@@ -8,10 +8,10 @@
 </head>
 
 <body>
-    <h1>noticias</h1>
-    <form class="d-flex flex-column form_criar" id="formCriarNoticia" enctype="multipart/form-data">
+    <h1>Materia - Conteúdo</h1>
+    <form class="d-flex flex-column form_criar" id="formCriarContMateria" enctype="multipart/form-data">
 
-        <select id="materia_noticia" name="materia_questao" required class="mt-2 mb-2">
+        <select id="materia_ContMateria" name="materia_questao" required class="mt-2 mb-2">
             <option value="" class="selecionada" disabled selected>Selecione uma matéria</option>
             <option value="1">Artes</option>
             <option value="2">Biologia</option>
@@ -28,23 +28,23 @@
 
         </select>
 
-        <input type="text" name="titulo_noticia" id="titulo_noticia" placeholder="Título:"
+        <input type="text" name="titulo_cont_materia" id="titulo_Cont_materia" placeholder="Título:"
         class="mt-2" required>
 
 
 
-        <label for="txt_noticia" class="mt-2">Notícia:</label>
-        <textarea name="txt_noticia" id="txt_noticia" class="form-control" rows="5"
+        <label for="txt_cont_materia" class="mt-2">Notícia:</label>
+        <textarea name="txt_cont_materia" id="txt_cont_materia" class="form-control" rows="5"
         required></textarea>
 
         <div class="add_img_livro mt-2 d-flex justify-content-end">
-            <input type="file" name="img_noticia" id="img_noticia" accept="image/*" required>
-
+            <input type="file" name="ContMateria_img" id="ContMateria_img" accept="image/*" required>
+            
             <button class="botoes fw-normal p-1" style="background-color: #a3e047;"
                 type="submit">Enviar</button>
         </div>
     </form>
-<script src="./js/script_noticia.js"></script>
+<script src="./js/script_materiaCont.js"></script>
 </body>
 
 </html>
