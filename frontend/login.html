@@ -9,17 +9,34 @@
     <h2>Login de Usuário</h2>
 
     <form id="loginForm">
-        <input type="email" id="Usuario_email_login" placeholder="Email" required>
-        <input type="password" id="Usuario_senha_login" placeholder="Senha" required>
-        <button type="submit" id="">Entrar</button>
+        <input type="text" id="Login_nome" placeholder="Nome" required>
+        <input type="password" id="Login_senha" placeholder="Senha" required>
+        <button type="submit">Entrar</button>
     </form>
+
+
+    <p id="loginResponse"></p>
 
     
 
+    <h2>Cadastro de Usuário</h2>
+    <form id="cadastroForm">
+    <label for="nome">Nome:</label>
+    <input type="text" id="Usuario_nome" name="Usuario_nome" placeholder="Nome" required>
 
-    <p id="mensagem"></p>
+    <label for="email">Email:</label>
+    <input type="email" id="Usuario_email"  name="Usuario_email" placeholder="Email" required>
+
+    <label for="senha">Senha:</label>
+    <input type="password" id="Usuario_senha" name="Usuario_senha" placeholder="Senha" required>
+
+
+    <button type="submit">Cadastrar</button>
+</form>
+
 
     <script src="./js/script_login.js"></script>
+    <script src="./js/script.js"></script>
 </body>
 </html>
 
