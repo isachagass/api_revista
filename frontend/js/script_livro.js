@@ -27,7 +27,7 @@ document.getElementById("formCriarLivro").addEventListener("submit", async funct
         formData.append("Catalogo_sinopse", sinopse);
         formData.append("Catalogo_disponivel_biblioteca", disp_biblioteca);
         formData.append("Catalogo_img", imagem);
-        formData.append("usuarios_idUsuarios", "2");
+        formData.append("usuarios_idUsuarios", "5");
 
         console.log("Enviando:", [...formData.entries()]);
         

@@ -21,7 +21,7 @@ document.getElementById("formCriarQuestao").addEventListener("submit", async fun
     formData.append("Atividade_exp", explicacao_questao);
     formData.append("Atividade_img", img_questao);
     formData.append("Matéria_idMatéria", idMateria_questao);
-    formData.append("Usuarios_idUsuarios", '2');
+    formData.append("Usuarios_idUsuarios", '5');
     
 
     console.log("Enviando dados:", [...formData.entries()]);

@@ -7,7 +7,7 @@
     font-family: 'Calibri';
 }
 
-#caroselDiv {
+#carouselGrande {
     width: 80%;
     height: 80vh;
     margin: auto;
@@ -15,20 +15,20 @@
 }
 
 .carousel-caption {
-    bottom: 15% !important;
+    /* bottom: 15% !important; */
     z-index: 100; 
 }
 
 .carousel-indicators {
-    bottom: 15% !important; 
+    bottom: 5% !important; 
 }
 
 #botoesV {
-    left: 100px;
+    right: 20px;
 }
 
 #botoesN {
-    right: 100px;
+    right: 20px;
 }
 #carouselGrande .carousel-item::after {
     content: "";
@@ -40,6 +40,33 @@
     background: linear-gradient(to top, rgba(0, 0, 0, 0.932), rgba(0, 0, 0, 0));
     pointer-events: none; /* Garante que não interfira nos botões do carrossel */
     
+}
+#carouselGrande .carousel-item{
+    position: relative;
+    overflow: hidden;
+}
+.item-a{
+    width: 100%;
+    height: 100%;
+
+}
+.carousel-caption {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    color: white;
+    text-shadow: 0 0 6px rgba(0, 0, 0, 0.75);
+}
+.carousel-caption h5{
+    width: 45%;
+    margin: auto;
+    text-align: center;
+}
+#carouselGrande .carousel-item img{
+    width: 100%;
+    height: auto;
+    object-fit: cover;
 }
 button.botoes, h1.botoes, a.botoes, div.botoes{
     border-radius: 25px !important;
@@ -76,8 +103,9 @@ input.input-L::placeholder{
 
 
 /*Carrossel de 3 imagens */
-#imagensCartalogo div img{
-    height: 200px;
+#imagensCartalogo a img{
+    height: 250px;
+    border-radius: 9px;
 }
 #imagensCartalogo .col{
     padding: 0px !important;
@@ -541,4 +569,15 @@ h1.materiaBaixo{
 .questoes{
     
     grid-template-columns: repeat(4, 1fr);
+}
+
+
+/* carrossel da materia */
+.btprev-materia{
+    left: -127px !important;
+    filter: invert(1);
+}
+.btnext-materia{
+    right: -125px !important;
+    filter: invert(1);
 }

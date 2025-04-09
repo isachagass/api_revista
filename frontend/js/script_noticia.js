@@ -8,7 +8,7 @@ document.getElementById("formCriarNoticia").addEventListener("submit", async fun
     const conteudo_noticia = document.getElementById("txt_noticia").value;
     const img_noticia = document.getElementById("img_noticia").files[0];
 
-    if (!idMateria_noticia || !titulo_noticia || !conteudo_noticia) {
+    if (!idMateria_noticia || !titulo_noticia || !conteudo_noticia || !img_noticia) {
         alert("Preencha todos os campos!");
         return;
     } 
@@ -17,8 +17,8 @@ document.getElementById("formCriarNoticia").addEventListener("submit", async fun
     formData.append("Conteudo_titulo", titulo_noticia);
     formData.append("Conteudo_img", img_noticia);
     formData.append("Conteudo_cont", conteudo_noticia);
-    formData.append("Conteudo_tipo", "1");
-    formData.append("Usuarios_idUsuarios", "2");
+    formData.append("Conteudo_tipo", "2");
+    formData.append("Usuarios_idUsuarios", "5");
     formData.append("Materia_idMateria", idMateria_noticia);
 
     console.log("Enviando:", [...formData.entries()]);

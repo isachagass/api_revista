@@ -26,7 +26,7 @@ if (isset($_FILES["Conteudo_img"]) && $_FILES["Conteudo_img"]["error"] === 0) {
 
     // Tenta mover a imagem para a pasta correta
     if (move_uploaded_file($_FILES["Conteudo_img"]["tmp_name"], $caminhoDestino)) {
-        $conteudo_img = $caminhoDestino;
+        $conteudo_img = $nomeArquivo;
     } else {
         echo json_encode(["status" => "error", "message" => "Falha ao salvar imagem"]);
         exit;

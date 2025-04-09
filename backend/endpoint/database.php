@@ -1,5 +1,5 @@
 <?php
-$host = "127.0.0.1:3307";
+$host = "127.0.0.1:3306";
 $dbname = "Revista_kubo-m";
 $username = "root";
 $password = "";
