@@ -84,7 +84,9 @@ input.input-L::placeholder{
 }
 
 /* modal */
-
+.ativo_biblioteca{
+    display: none;
+}
 #modalLivros {
     width: 95%;
     height: 75vh;
@@ -149,12 +151,13 @@ input.input-L::placeholder{
     top: 0;
     left: 0;
     perspective: 1500px;
+    z-index: 0;
 
 }
 
 .front,
 .back {
-    background-image: url('../images/pagDireita.png');
+    background-image: url('../images/pagDireita.png') !important;
     position: absolute;
     width: 100%;
     height: 100%;
@@ -238,18 +241,6 @@ button:hover i {
     color: rgb(255, 255, 255);
 }
 
-/* Paper stack order */
-#p1 {
-    z-index: 3;
-}
-
-#p2 {
-    z-index: 2;
-}
-
-#p3 {
-    z-index: 1;
-}
 
 #b1 h1{
     align-self: start;

@@ -20,7 +20,7 @@
             <h1 class="text-center fs-2">Catálogos</h1>
 
             <button class="btn btn-lg botoes fw-normal border-0 shadow" data-bs-target="#exampleModalToggle"
-                data-bs-toggle="modal">Veja Todos os Livros</button>
+                data-bs-toggle="modal" onclick="carregarTodosLivros()">Veja Todos os Livros</button>
         </div>
         <div id="LivrosCatalogo" class="w-75 d-flex align-items-center justify-content-center">
 
@@ -47,9 +47,8 @@
     <!-- --------------------------------------------- -->
 
 
-    <!-- mural de cada livro -->
 
-    <!-- Modal único no HTML -->
+    <!-- Modal do conteudo de um livro -->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -61,11 +60,19 @@
                     <img src="" alt="Capa do livro" id="modalImg" style="height: 50vh; width: auto;">
                     <div class="modalCadaLivroTxt w-50">
                         <h2 class="text-center fs-3 fw-semibold" id="modalTitulo"></h2>
+
+                        <p class="text-center" id="modalAutor" style="color: gray"></p>
                         <p class="text-center" id="modalDescricao"></p>
 
                         <div class="disponivelBt">
                             <p class="text-center fw-semibold fs-5 mb-0">Disponível em:</p>
-                            <div class="d-flex justify-content-center" id="modalLinks"></div>
+                            <div class="d-flex justify-content-center" id="modalLinks">
+                                <a class="botoes border-0 p-2 fw-normal m-2 text-center" id="bt_biblioteca">Biblioteca
+                                    Escolar</a>
+                                <a href="https://www.amazon.com.br/%C3%81gua-funda-Ruth-Guimar%C3%A3es/dp/8573267011"
+                                    target="_blank" class="botoes border-0 p-2 fw-normal m-2 text-center">Compre
+                                    aqui</a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -74,7 +81,42 @@
     </div>
 
 
+    <!-- modal de todos os livros juntos -->
+
+    <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel"
+        tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-xl border-0">
+            <div class="modal-content border-0" style="background-color: transparent !important;">
+                <div class="modal-header border-0">
+
+                    <button type="button" class="btn-close btn-light" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body border-0">
+
+                    <div id="modalLivros" class="m-auto">
+
+                        <button id="prev-btn">
+                            <i class="bi bi-arrow-left"></i>
+                        </button>
+
+                        <!-- Book -->
+                        <div id="book" class="book"></div>
+
+
+                        <button id="next-btn">
+                            <i class="bi bi-arrow-right"></i>
+                        </button>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
     <script>
+        // carregar modal 3 img
         async function carregarCatalogo() {
             try {
                 let response = await fetch('http://localhost/api_php/backend/endpoint/Get/catalogo_imagem_get.php');
@@ -123,34 +165,246 @@
             }
         }
 
+        // modal de cada livro
         function atualizarModal(livro) {
             console.log("Livro selecionado:", livro); // Verifica no console se os dados estão corretos
-            
+
             document.getElementById("modalImg").src = livro.imagem;
             document.getElementById("modalTitulo").textContent = livro.titulo;
             document.getElementById("modalDescricao").textContent = livro.sinopse;
+            document.getElementById("modalAutor").textContent = livro.autor;
 
-            let disponivelDiv = document.getElementById("modalLinks");
-            disponivelDiv.innerHTML = '';  // Remove os links antigos
+            console.log(livro.biblioteca, livro.link);
 
-            if (livro.local) {
-                let localLink = document.createElement('a');
-                localLink.classList.add('botoes', 'border-0', 'p-2', 'fw-normal', 'm-2', 'text-center');
-                localLink.textContent = livro.local;
-                disponivelDiv.appendChild(localLink);
+            const bt_bibloteca = document.querySelector("#bt_biblioteca");
+            const bt_compra = document.querySelector("#modalLinks a[href^='http']")
+
+            if (livro.biblioteca === '1' || livro.biblioteca === 1) {
+                bt_bibloteca.classList.remove("ativo_biblioteca");
+            } else {
+                bt_bibloteca.classList.add("ativo_biblioteca");
             }
 
-            if (livro.linkCompra) {
-                let compraLink = document.createElement('a');
-                compraLink.href = livro.linkCompra;
-                compraLink.target = "_blank";
-                compraLink.classList.add('botoes', 'border-0', 'p-2', 'fw-normal', 'm-2', 'text-center');
-                compraLink.textContent = "Compre aqui";
-                disponivelDiv.appendChild(compraLink);
+            if (livro.link) {
+                bt_compra.href = livro.link;
+            } else {
+                bt_compra.href = '#';
             }
         }
 
-        // Chama a função para carregar o catálogo
+        // conectar a api e trazer todos os livros
+        async function carregarTodosLivros() {
+            try {
+                const response = await fetch("http://localhost/api_php/backend/endpoint/Get/catalogo_getALL.php");
+                const livros = await response.json();
+
+                console.log("Livros recebidos:", livros); // debug
+                mostrarTodosLivros(livros);
+            } catch (error) {
+                console.error("Erro ao carregar livros:", error);
+            }
+        }
+
+        // montar o modal com todos os livros 
+        function mostrarTodosLivros(livros) {
+
+
+
+            const book = document.getElementById("book");
+            book.innerHTML = ""; // Limpa tudo antes de adicionar
+
+            let pagina = 1;
+            let i = 0;
+
+            // Cria a primeira folha com apenas o BACK
+            const paper1 = document.createElement("div");
+            paper1.classList.add("paper", "flipped");
+            paper1.id = `p${pagina}`;
+
+            const backDiv1 = document.createElement("div");
+            backDiv1.classList.add("back");
+
+            const backContent1 = document.createElement("div");
+            backContent1.id = `b${pagina}`;
+            backContent1.classList.add("back-content");
+
+            // Título do catálogo
+            const titulo = document.createElement("h1");
+            titulo.className = "botoes fw-normal fs-2 shadow border-0";
+            titulo.style.width = "300px";
+            titulo.textContent = "Catálogo de Livros";
+            backContent1.appendChild(titulo);
+
+            for (let j = 0; j < 2 && i < livros.length; j++, i++) {
+                const livroDiv = criarLivro(livros[i]);
+                backContent1.appendChild(livroDiv);
+            }
+
+            backDiv1.appendChild(backContent1);
+            paper1.appendChild(backDiv1);
+            book.appendChild(paper1);
+            pagina++;
+
+            // Próximas folhas com front e back
+            while (i < livros.length) {
+                const paper = document.createElement("div");
+                paper.classList.add("paper");
+                paper.id = `p${pagina}`;
+
+                // FRONT
+                const frontDiv = document.createElement("div");
+                frontDiv.classList.add("front");
+
+                const frontContent = document.createElement("div");
+                frontContent.id = `f${pagina}`;
+                frontContent.classList.add("front-content");
+
+                for (let j = 0; j < 2 && i < livros.length; j++, i++) {
+                    const livroDiv = criarLivro(livros[i]);
+                    frontContent.appendChild(livroDiv);
+                }
+
+                frontDiv.appendChild(frontContent);
+                paper.appendChild(frontDiv);
+
+                // BACK
+                if (i < livros.length) {
+                    const backDiv = document.createElement("div");
+                    backDiv.classList.add("back");
+
+                    const backContent = document.createElement("div");
+                    backContent.id = `b${pagina}`;
+                    backContent.classList.add("back-content");
+
+                    for (let j = 0; j < 2 && i < livros.length; j++, i++) {
+                        const livroDiv = criarLivro(livros[i]);
+                        backContent.appendChild(livroDiv);
+                    }
+
+                    backDiv.appendChild(backContent);
+                    paper.appendChild(backDiv);
+                }
+
+                book.appendChild(paper);
+                pagina++;
+
+                // Se o número total de papers for ímpar, adiciona um paper vazio
+                if ((pagina - 1) % 2 !== 0) {
+                    const emptyPaper = document.createElement("div");
+                    emptyPaper.classList.add("paper");
+                    emptyPaper.id = `p${pagina}`;
+
+                    const frontDiv = document.createElement("div");
+                    frontDiv.classList.add("front", "empty");
+
+                    const frontContent = document.createElement("div");
+                    frontContent.classList.add("front-content");
+                    frontContent.innerHTML = "<p style='text-align:center; color: #aaa; font-style:italic;'>Página em branco</p>";
+
+                    frontDiv.appendChild(frontContent);
+                    emptyPaper.appendChild(frontDiv);
+
+                    book.appendChild(emptyPaper);
+                    pagina++;
+            }
+        }
+
+            // Após todas as páginas terem sido adicionadas
+
+
+        
+            const papers = Array.from(document.querySelectorAll(".paper"));
+
+            // Verifica se o número de papéis é ímpar
+            if (papers.length % 2 !== 0) {
+                // Cria um novo paper em branco
+                const emptyPaper = document.createElement("div");
+                emptyPaper.classList.add("paper");
+
+                // Você pode adicionar elementos internos se quiser estrutura igual
+                emptyPaper.innerHTML = `
+                    <div class="front empty"></div>
+                    <div class="back empty"></div>
+                `;
+
+                book.appendChild(emptyPaper); // Adiciona ao final do livro
+            }
+
+            const prevBtn = document.querySelector("#prev-btn");
+            const nextBtn = document.querySelector("#next-btn");
+
+            let currentLocation = 1;
+            const numOfPapers = papers.length;
+            const maxLocation = numOfPapers + 1;
+
+            prevBtn.onclick = goPrevPage;
+            nextBtn.onclick = goNextPage;
+
+            function goNextPage() {
+                if (currentLocation < maxLocation) {
+                    const index = currentLocation - 1;
+                    if (papers[index]) {
+                        papers[index].classList.add("flipped");
+                        papers[index].style.zIndex = currentLocation;
+                        currentLocation++;
+                    }
+                }
+            }
+
+            function goPrevPage() {
+                if (currentLocation > 1) {
+                    currentLocation--;
+                    const index = currentLocation - 1;
+                    if (papers[index]) {
+                        papers[index].classList.remove("flipped");
+                        papers[index].style.zIndex = numOfPapers - index;
+                    }
+                }
+            }
+
+
+        }
+
+        // monta cada pedaço de cada livro e manda para o modal com todos os livro
+        function criarLivro(livro) {
+            const divLivro = document.createElement("div");
+            divLivro.classList.add("livrosCatalogo");
+
+            const img = document.createElement("img");
+            img.src = livro.Catalogo_img ? `../backend/uploads/${livro.Catalogo_img}` : "./images/default.jpg";
+            img.alt = `Capa do livro ${livro.Catalogo_titulo}`;
+
+            const textoDiv = document.createElement("div");
+            textoDiv.classList.add("textoLivro");
+
+            const h2 = document.createElement("h2");
+            h2.classList.add("fw-semibold", "fs-6", "text-center");
+            h2.textContent = livro.Catalogo_titulo;
+
+            const pAutor = document.createElement("p");
+            pAutor.classList.add("fs-6", "text-center");
+            pAutor.textContent = `Autor: ${livro.Catalogo_autor}`;
+
+            const pSinopse = document.createElement("p");
+            pSinopse.classList.add("fs-6");
+            pSinopse.textContent = livro.Catalogo_sinopse;
+
+            textoDiv.appendChild(h2);
+            textoDiv.appendChild(pAutor);
+            textoDiv.appendChild(pSinopse);
+
+            divLivro.appendChild(img);
+            divLivro.appendChild(textoDiv);
+
+            return divLivro;
+        }
+
+
+
+
+        
+
+
         carregarCatalogo();
 
 

@@ -2,7 +2,7 @@
 require '../database.php';
 
 try {
-    $sql = "SELECT Catalogo_titulo, Catalogo_img, Catalogo_sinopse FROM Catalogos";
+    $sql = "SELECT Catalogo_titulo, Catalogo_sinopse, Catalogo_img, Catalogo_link, Catalogo_autor, Catalogo_disponivel_biblioteca FROM Catalogos";
 
     $stmt = $conn->prepare($sql);
     $stmt->execute();
@@ -15,7 +15,10 @@ try {
         return [
             "titulo" => $row["Catalogo_titulo"],
             "imagem" => "http://localhost/api_php/backend/uploads/" . $row["Catalogo_img"],
-            "sinopse" => $row["Catalogo_sinopse"] // Adiciona a sinopse
+            "sinopse" => $row["Catalogo_sinopse"], 
+            "autor" => $row["Catalogo_autor"], 
+            "link" => $row["Catalogo_link"], 
+            "biblioteca" => $row["Catalogo_disponivel_biblioteca"] 
         ];
     }, $resultados);
 

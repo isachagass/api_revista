@@ -18,7 +18,7 @@ document.getElementById("formCriarContMateria").addEventListener("submit", async
     formData.append("Conteudo_img", imagem_contMateria);
     formData.append("Conteudo_cont", conteudo_contMateria);
     formData.append("Conteudo_tipo", "2");
-    formData.append("Usuarios_idUsuarios", "5");
+    formData.append("Usuarios_idUsuarios", "2");
     formData.append("Materia_idMateria", idMateria_contMateria);
     
     console.log("Enviando:", [...formData.entries()]);

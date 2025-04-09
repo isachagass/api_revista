@@ -3,8 +3,14 @@ document.getElementById("formCriarLivro").addEventListener("submit", async funct
     
         const formData = new FormData();
         const titulo = document.getElementById("Catalogo_titulo").value;
+        const autor = document.getElementById("Catalogo_autor").value;
+        const link = document.getElementById("Catalogo_link").value;
         const sinopse = document.getElementById("Catalogo_sinopse").value;
         const imagem = document.getElementById("Catalogo_img").files[0];
+
+        const disp_biblioteca = document.querySelector('input[name="Catalogo_disponivel_biblioteca"]:checked')?.value;
+
+
        
         // const userId = 2;
 
@@ -16,9 +22,12 @@ document.getElementById("formCriarLivro").addEventListener("submit", async funct
         
   
         formData.append("Catalogo_titulo", titulo);
+        formData.append("Catalogo_autor", autor);
+        formData.append("Catalogo_link", link);
         formData.append("Catalogo_sinopse", sinopse);
+        formData.append("Catalogo_disponivel_biblioteca", disp_biblioteca);
         formData.append("Catalogo_img", imagem);
-        formData.append("usuarios_idUsuarios", "5");
+        formData.append("usuarios_idUsuarios", "2");
 
         console.log("Enviando:", [...formData.entries()]);
         

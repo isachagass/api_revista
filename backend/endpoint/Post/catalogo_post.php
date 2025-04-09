@@ -12,7 +12,10 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
 
 // Captura os dados do formulário
 $catalogo_titulo = $_POST["Catalogo_titulo"] ?? null;
+$catalogo_autor = $_POST["Catalogo_autor"] ?? null;
+$catalogo_link = $_POST["Catalogo_link"] ?? null;
 $catalogo_sinopse = $_POST["Catalogo_sinopse"] ?? null;
+$catalogo_dpn_biblioteca = $_POST["Catalogo_disponivel_biblioteca"] ?? null;
 $id_user = $_POST["usuarios_idUsuarios"] ?? null;
 
 // Captura a imagem
@@ -35,18 +38,21 @@ if (isset($_FILES["Catalogo_img"]) && $_FILES["Catalogo_img"]["error"] === 0) {
 }
 
 // Verifica se todos os campos obrigatórios estão preenchidos
-if (!$catalogo_titulo || !$catalogo_sinopse || !$id_user) {
+if (!$catalogo_titulo || !$catalogo_sinopse || !$id_user || !$catalogo_autor || !$catalogo_link || !$catalogo_imagem) {
     echo json_encode(["status" => "error", "message" => "Campos obrigatórios ausentes"]);
     exit;
 }
 
 // Tenta inserir no banco de dados
 try {
-    $sql = $conn->prepare("INSERT INTO Catalogos (Catalogo_titulo, Catalogo_sinopse, Catalogo_img, usuarios_idUsuarios) VALUES (:titulo, :sinopse, :img, :fkidUser)");
+    $sql = $conn->prepare("INSERT INTO Catalogos (Catalogo_titulo, Catalogo_sinopse, Catalogo_img, usuarios_idUsuarios, Catalogo_link, Catalogo_autor, Catalogo_disponivel_biblioteca) VALUES (:titulo, :sinopse, :img, :fkidUser, :link, :autor, :biblioteca)");
     $sql->bindValue(':titulo', $catalogo_titulo);
     $sql->bindValue(':sinopse', $catalogo_sinopse);
     $sql->bindValue(':img', $catalogo_imagem);
     $sql->bindValue(':fkidUser', $id_user);
+    $sql->bindValue(':link', $catalogo_link);
+    $sql->bindValue(':autor', $catalogo_autor);
+    $sql->bindValue(':biblioteca', $catalogo_dpn_biblioteca);
 
     $sql->execute();
 
