@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>testando upload img</title>
+</head>
+<body>
+    
+    <form id="formAddImg">
+        <input type="file" name="addFile" id="addFile" required>
+        <br>
+        <button type="submit">Enviar</button>
+    </form>
+    <p id="msg"></p>
+
+    <script>
+        document.getElementById("formAddImg").addEventListener("submit", function(event){
+            event.preventDefault();
+
+            let formData = new FormData();
+            let arquivo = document.getElementById("addFile").files[0];
+
+            if(!arquivo){
+                document.getElementById("msg").innerText = "Selecione  um arquivo!";
+                return;
+            }
+
+            formData.append("arquivo", arquivo);
+
+            fetch("http://localhost/api_php/backend/endpoint/Post/upload.php", {
+                method: 'POST',
+                body: formData
+            })
+
+            .then(response=> response.json())
+            .then(data => {
+                document.getElementById("msg").innerText = data.message;
+            })
+            .catch(error => {
+                document.getElementById("msg").innerText = "Erro ao enviar arquivo";
+            });
+        });
+    </script>
+</body>
+</html>

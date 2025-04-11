@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>Materia - Conteúdo</h1>
+    <form class="d-flex flex-column form_criar" id="formCriarContMateria" enctype="multipart/form-data">
+
+        <select id="materia_ContMateria" name="materia_questao" required class="mt-2 mb-2">
+            <option value="" class="selecionada" disabled selected>Selecione uma matéria</option>
+            <option value="1">Artes</option>
+            <option value="2">Biologia</option>
+            <option value="3">Filosofia</option>
+            <option value="4">Física</option>
+            <option value="5">Geografia</option>
+            <option value="6">História</option>
+            <option value="7">Inglês</option>
+            <option value="8">Língua Portuguesa</option>
+            <option value="9">Matemática</option>
+            <option value="10">Química</option>
+            <option value="11">Sociologia</option>
+     
+
+        </select>
+
+        <input type="text" name="titulo_cont_materia" id="titulo_Cont_materia" placeholder="Título:"
+        class="mt-2" required>
+
+
+
+        <label for="txt_cont_materia" class="mt-2">Notícia:</label>
+        <textarea name="txt_cont_materia" id="txt_cont_materia" class="form-control" rows="5"
+        required></textarea>
+
+        <div class="add_img_livro mt-2 d-flex justify-content-end">
+            <input type="file" name="ContMateria_img" id="ContMateria_img" accept="image/*" required>
+            
+            <button class="botoes fw-normal p-1" style="background-color: #a3e047;"
+                type="submit">Enviar</button>
+        </div>
+    </form>
+<script src="./js/script_materiaCont.js"></script>
+</body>
+
+</html>
